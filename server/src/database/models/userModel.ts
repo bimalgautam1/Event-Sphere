@@ -1,4 +1,4 @@
-import { Table, Model, PrimaryKey, Column, DataType,Unique, NotNull, Validate, IsEmail } from "sequelize-typescript"
+import { Table, Model, PrimaryKey, Column, DataType,Unique, NotNull, Validate, IsEmail, AllowNull } from "sequelize-typescript"
 
 @Table({
     tableName : "users",
@@ -15,34 +15,38 @@ class User extends Model{
     declare id:string
 
     @Unique
-    @NotNull
     @Column({
         type:DataType.STRING,
+        allowNull : false
         
     })
     declare username:string
 
     @Unique
-    @NotNull
     @Column({
         type : DataType.STRING,
+        allowNull : false,
         validate :{
-            IsEmail : true
+            isEmail : true,
+            
         }
     })
     declare email : string
 
-    @NotNull
     @Column({
         type : DataType.STRING,
+        allowNull : false
     })
     declare password : string
 
-    @NotNull
     @Column({
         type : DataType.ENUM('organizer','attendee'),
-        defaultValue : 'attendee'
+        defaultValue : 'attendee',
+        allowNull : false
     })
     declare role : string
+
+    
+    
 }
 export default User
