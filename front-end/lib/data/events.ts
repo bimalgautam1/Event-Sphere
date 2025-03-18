@@ -1,0 +1,180 @@
+export interface Event {
+  id: string
+  title: string
+  description: string
+  longDescription?: string
+  date: string
+  time?: string
+  location?: string
+  price: string
+  category: string
+  image: string
+  organizer?: string
+  rating?: number
+  reviews?: number
+  attendees?: number
+}
+
+export const events: Event[] = [
+  {
+    id: "1",
+    title: "Tech Conference 2023",
+    description: "Join industry leaders for a day of innovation and networking",
+    longDescription:
+      "Join us for the most anticipated tech event of the year! Tech Conference 2023 brings together industry leaders, innovators, and tech enthusiasts for a full day of learning, networking, and inspiration.\n\nThe conference will feature keynote presentations from renowned tech leaders, panel discussions on emerging technologies, hands-on workshops, and plenty of opportunities to connect with peers and potential collaborators.\n\nWhether you're a developer, designer, product manager, or tech entrepreneur, this event offers valuable insights and connections to help you stay ahead in the rapidly evolving tech landscape.",
+    date: "Oct 15, 2023",
+    time: "9:00 AM - 5:00 PM",
+    location: "Tech Convention Center, San Francisco, CA",
+    price: "$99.00",
+    category: "Technology",
+    image: "/placeholder.svg?height=400&width=600",
+    organizer: "TechEvents Inc.",
+    rating: 4.8,
+    reviews: 124,
+    attendees: 350,
+  },
+  {
+    id: "2",
+    title: "Summer Music Festival",
+    description: "A weekend of amazing performances from top artists",
+    date: "Jul 22-24, 2023",
+    time: "12:00 PM - 11:00 PM",
+    location: "Central Park, New York, NY",
+    price: "$149.00",
+    category: "Music",
+    image: "/placeholder.svg?height=400&width=600",
+    organizer: "Festival Productions",
+    rating: 4.6,
+    reviews: 312,
+    attendees: 5000,
+  },
+  {
+    id: "3",
+    title: "Business Leadership Summit",
+    description: "Learn strategies from successful entrepreneurs",
+    date: "Sep 5, 2023",
+    time: "8:30 AM - 4:30 PM",
+    location: "Grand Hotel Conference Center, Chicago, IL",
+    price: "$199.00",
+    category: "Business",
+    image: "/placeholder.svg?height=400&width=600",
+    organizer: "Business Growth Network",
+    rating: 4.9,
+    reviews: 87,
+    attendees: 250,
+  },
+  {
+    id: "4",
+    title: "Art Exhibition Opening",
+    description: "Featuring works from contemporary local artists",
+    date: "Aug 12, 2023",
+    time: "7:00 PM - 10:00 PM",
+    location: "Modern Art Gallery, Los Angeles, CA",
+    price: "$25.00",
+    category: "Arts & Culture",
+    image: "/placeholder.svg?height=400&width=600",
+    organizer: "LA Arts Council",
+    rating: 4.7,
+    reviews: 56,
+    attendees: 180,
+  },
+  {
+    id: "5",
+    title: "Startup Pitch Competition",
+    description: "Watch innovative startups compete for funding",
+    date: "Nov 3, 2023",
+    time: "1:00 PM - 6:00 PM",
+    location: "Innovation Hub, Austin, TX",
+    price: "$45.00",
+    category: "Business",
+    image: "/placeholder.svg?height=400&width=600",
+    organizer: "Venture Capital Partners",
+    rating: 4.5,
+    reviews: 42,
+    attendees: 200,
+  },
+  {
+    id: "6",
+    title: "Charity Gala Dinner",
+    description: "An elegant evening supporting local charities",
+    date: "Dec 10, 2023",
+    time: "6:30 PM - 11:00 PM",
+    location: "Ritz Carlton, Boston, MA",
+    price: "$250.00",
+    category: "Charity",
+    image: "/placeholder.svg?height=400&width=600",
+    organizer: "Community Foundation",
+    rating: 4.9,
+    reviews: 31,
+    attendees: 300,
+  },
+  {
+    id: "7",
+    title: "Photography Workshop",
+    description: "Learn techniques from professional photographers",
+    date: "Aug 19, 2023",
+    time: "10:00 AM - 3:00 PM",
+    location: "Photography Studio, Seattle, WA",
+    price: "$75.00",
+    category: "Education",
+    image: "/placeholder.svg?height=400&width=600",
+    organizer: "Creative Lens Academy",
+    rating: 4.8,
+    reviews: 64,
+    attendees: 30,
+  },
+  {
+    id: "8",
+    title: "Food & Wine Festival",
+    description: "Taste culinary delights from top local chefs",
+    date: "Sep 16-17, 2023",
+    time: "11:00 AM - 8:00 PM",
+    location: "Waterfront Park, Portland, OR",
+    price: "$85.00",
+    category: "Food & Drink",
+    image: "/placeholder.svg?height=400&width=600",
+    organizer: "Culinary Arts Association",
+    rating: 4.7,
+    reviews: 128,
+    attendees: 1200,
+  },
+  {
+    id: "9",
+    title: "Marathon City Run",
+    description: "Join thousands of runners in this annual city event",
+    date: "Oct 8, 2023",
+    time: "7:00 AM - 2:00 PM",
+    location: "Downtown, Philadelphia, PA",
+    price: "$50.00",
+    category: "Sports",
+    image: "/placeholder.svg?height=400&width=600",
+    organizer: "City Athletics Club",
+    rating: 4.6,
+    reviews: 215,
+    attendees: 3000,
+  },
+]
+
+export function getEvent(id: string): Event | undefined {
+  return events.find((event) => event.id === id)
+}
+
+export function getEvents(category?: string, limit?: number): Event[] {
+  let filteredEvents = events
+
+  if (category && category !== "all") {
+    filteredEvents = events.filter((event) => event.category === category)
+  }
+
+  if (limit) {
+    return filteredEvents.slice(0, limit)
+  }
+
+  return filteredEvents
+}
+
+export function getCategories(): string[] {
+  const categories = new Set(events.map((event) => event.category))
+  return Array.from(categories)
+}
+
