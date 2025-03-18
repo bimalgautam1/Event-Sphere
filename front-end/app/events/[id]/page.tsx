@@ -1,80 +1,106 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { ArrowLeft, CalendarDays, Clock, MapPin, Share, Star, Users } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
-import { useRouter } from "next/navigation"
+import {
+  ArrowLeft,
+  CalendarDays,
+  Clock,
+  MapPin,
+  Share,
+  Star,
+  Users,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { SiteLayout } from "@/components/layout/site-layout"
-import { LoadingSpinner } from "@/components/ui/loading-spinner"
-import { fetchEventById } from "@/lib/api"
-import type { Event } from "@/lib/types"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { fetchEventById } from "@/lib/api";
+import type { Event } from "@/lib/types";
 
-export default function EventDetailPage({ params }: { params: { id: string } }) {
-  const router = useRouter()
-  const [event, setEvent] = useState<Event | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [ticketCount, setTicketCount] = useState("1")
-  const [error, setError] = useState<string | null>(null)
+export default function EventDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const router = useRouter();
+  const [event, setEvent] = useState<Event | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [ticketCount, setTicketCount] = useState("1");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadEvent() {
-      setIsLoading(true)
-      setError(null)
+      setIsLoading(true);
+      setError(null);
 
       try {
-        const eventData = await fetchEventById(params.id)
+        const eventData = await fetchEventById(params.id);
         if (eventData) {
-          setEvent(eventData)
+          setEvent(eventData);
         } else {
-          setError("Event not found")
+          setError("Event not found");
           // Redirect after a short delay
-          setTimeout(() => router.push("/events"), 2000)
+          setTimeout(() => router.push("/events"), 2000);
         }
       } catch (error) {
-        setError("Failed to load event details")
-        console.error("Error loading event:", error)
+        setError("Failed to load event details");
+        console.error("Error loading event:", error);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     }
 
-    loadEvent()
-  }, [params.id, router])
+    loadEvent();
+  }, [params.id, router]);
 
   if (isLoading) {
     return (
-      <SiteLayout>
+      <>
         <div className="container py-12 flex items-center justify-center">
           <LoadingSpinner />
         </div>
-      </SiteLayout>
-    )
+      </>
+    );
   }
 
   if (error || !event) {
     return (
-      <SiteLayout>
+      <>
         <div className="container py-12 flex flex-col items-center justify-center">
           <p className="text-destructive mb-4">{error}</p>
           <Button asChild>
             <Link href="/events">Back to Events</Link>
           </Button>
         </div>
-      </SiteLayout>
-    )
+      </>
+    );
   }
 
   return (
-    <SiteLayout>
+    <>
       <div className="container px-4 py-8 md:px-6 md:py-12">
-        <Link href="/events" className="inline-flex items-center gap-2 text-sm font-medium mb-6 hover:underline">
+        <Link
+          href="/events"
+          className="inline-flex items-center gap-2 text-sm font-medium mb-6 hover:underline"
+        >
           <ArrowLeft className="h-4 w-4" />
           Back to Events
         </Link>
@@ -89,7 +115,9 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                 height={600}
                 className="w-full object-cover aspect-[2/1]"
               />
-              <Badge className="absolute top-4 right-4 text-sm px-3 py-1">{event.category}</Badge>
+              <Badge className="absolute top-4 right-4 text-sm px-3 py-1">
+                {event.category}
+              </Badge>
             </div>
 
             <div>
@@ -117,14 +145,18 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                   <div className="flex items-center">
                     <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
                     <span className="ml-1 font-medium">{event.rating}</span>
-                    <span className="text-muted-foreground ml-1">({event.reviews} reviews)</span>
+                    <span className="text-muted-foreground ml-1">
+                      ({event.reviews} reviews)
+                    </span>
                   </div>
                   {event.attendees && (
                     <>
                       <Separator orientation="vertical" className="h-4" />
                       <div className="flex items-center gap-1">
                         <Users className="h-4 w-4" />
-                        <span className="text-muted-foreground">{event.attendees} attendees</span>
+                        <span className="text-muted-foreground">
+                          {event.attendees} attendees
+                        </span>
                       </div>
                     </>
                   )}
@@ -140,7 +172,9 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
 
             <div>
               <h2 className="text-xl font-semibold mb-4">About This Event</h2>
-              <p className="text-muted-foreground whitespace-pre-line">{event.longDescription || event.description}</p>
+              <p className="text-muted-foreground whitespace-pre-line">
+                {event.longDescription || event.description}
+              </p>
             </div>
 
             {event.organizer && (
@@ -152,7 +186,9 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                   </div>
                   <div>
                     <p className="font-medium">{event.organizer}</p>
-                    <p className="text-sm text-muted-foreground">Event Organizer</p>
+                    <p className="text-sm text-muted-foreground">
+                      Event Organizer
+                    </p>
                   </div>
                   <Button variant="outline" size="sm" className="ml-auto">
                     Contact
@@ -166,7 +202,9 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
                 <h2 className="text-xl font-semibold mb-4">Location</h2>
                 <div className="rounded-lg overflow-hidden border aspect-video bg-muted flex items-center justify-center">
                   <MapPin className="h-8 w-8 text-muted-foreground" />
-                  <span className="ml-2 text-muted-foreground">Map view would appear here</span>
+                  <span className="ml-2 text-muted-foreground">
+                    Map view would appear here
+                  </span>
                 </div>
                 <p className="mt-2 text-muted-foreground">{event.location}</p>
               </div>
@@ -210,13 +248,14 @@ export default function EventDetailPage({ params }: { params: { id: string } }) 
               </CardContent>
               <CardFooter className="flex flex-col gap-2">
                 <Button className="w-full">Book Now</Button>
-                <p className="text-xs text-center text-muted-foreground">You won't be charged yet</p>
+                <p className="text-xs text-center text-muted-foreground">
+                  You won't be charged yet
+                </p>
               </CardFooter>
             </Card>
           </div>
         </div>
       </div>
-    </SiteLayout>
-  )
+    </>
+  );
 }
-

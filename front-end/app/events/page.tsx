@@ -1,12 +1,18 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { Search } from "lucide-react"
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Search } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Pagination,
   PaginationContent,
@@ -14,81 +20,78 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"
-import { SiteLayout } from "@/components/layout/site-layout"
-import { EventGrid } from "@/components/events/event-grid"
-import { fetchEvents, fetchCategories } from "@/lib/api"
-import type { Event } from "@/lib/types"
-import { LoadingSpinner } from "@/components/ui/loading-spinner"
+} from "@/components/ui/pagination";
+import { SiteLayout } from "@/components/layout/site-layout";
+import { EventGrid } from "@/components/events/event-grid";
+import { fetchEvents, fetchCategories } from "@/lib/api";
+import type { Event } from "@/lib/types";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export default function EventsPage() {
-  const router = useRouter()
-  const [category, setCategory] = useState("all")
-  const [dateFilter, setDateFilter] = useState("upcoming")
-  const [priceFilter, setPriceFilter] = useState("all")
-  const [events, setEvents] = useState<Event[]>([])
-  const [categories, setCategories] = useState<string[]>([])
-  const [isLoadingEvents, setIsLoadingEvents] = useState(true)
-  const [isLoadingCategories, setIsLoadingCategories] = useState(true)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
+  const router = useRouter();
+  const [category, setCategory] = useState("all");
+  const [dateFilter, setDateFilter] = useState("upcoming");
+  const [priceFilter, setPriceFilter] = useState("all");
+  const [events, setEvents] = useState<Event[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [isLoadingEvents, setIsLoadingEvents] = useState(true);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   // Fetch categories on component mount
   useEffect(() => {
     async function loadCategories() {
-      setIsLoadingCategories(true)
+      setIsLoadingCategories(true);
       try {
-        const data = await fetchCategories()
-        setCategories(data)
+        const data = await fetchCategories();
+        setCategories(data);
       } catch (error) {
-        console.error("Failed to load categories:", error)
+        console.error("Failed to load categories:", error);
       } finally {
-        setIsLoadingCategories(false)
+        setIsLoadingCategories(false);
       }
     }
 
-    loadCategories()
-  }, [])
+    loadCategories();
+  }, []);
 
   // Fetch events when filters change
   useEffect(() => {
     async function loadEvents() {
-      setIsLoadingEvents(true)
+      setIsLoadingEvents(true);
       try {
         const data = await fetchEvents({
           category: category !== "all" ? category : undefined,
           page: currentPage,
           limit: 9,
-        })
-        setEvents(data)
+        });
+        setEvents(data);
         // In a real app, you would get total pages from the API
-        setTotalPages(Math.ceil(data.length / 9) || 1)
+        setTotalPages(Math.ceil(data.length / 9) || 1);
       } catch (error) {
-        console.error("Failed to load events:", error)
+        console.error("Failed to load events:", error);
       } finally {
-        setIsLoadingEvents(false)
+        setIsLoadingEvents(false);
       }
     }
 
-    loadEvents()
-  }, [category, currentPage])
-
-  const handleBookNow = (eventId: string) => {
-    router.push(`/events/${eventId}`)
-  }
+    loadEvents();
+  }, [category, currentPage]);
 
   const handleApplyFilters = () => {
-    setCurrentPage(1)
-    // This would trigger the useEffect to fetch events with the current filters
-  }
+    setCurrentPage(1);
+  };
 
   return (
-    <SiteLayout>
+    <>
       <div className="container px-4 py-8 md:px-6 md:py-12">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">All Events</h1>
-            <p className="text-muted-foreground">Discover and book amazing events</p>
+            <p className="text-muted-foreground">
+              Discover and book amazing events
+            </p>
           </div>
           <div className="w-full md:w-auto">
             <div className="relative">
@@ -161,13 +164,17 @@ export default function EventsPage() {
               </div>
             </div>
 
-            <Button className="w-full" onClick={handleApplyFilters} disabled={isLoadingEvents}>
+            <Button
+              className="w-full"
+              onClick={handleApplyFilters}
+              disabled={isLoadingEvents}
+            >
               Apply Filters
             </Button>
           </div>
 
           <div className="flex-1">
-            <EventGrid events={events} isLoading={isLoadingEvents} onBookNow={handleBookNow} />
+            <EventGrid events={events} isLoading={isLoadingEvents} />
 
             {!isLoadingEvents && events.length > 0 && (
               <Pagination className="mt-8">
@@ -176,10 +183,12 @@ export default function EventsPage() {
                     <PaginationPrevious
                       href="#"
                       onClick={(e) => {
-                        e.preventDefault()
-                        if (currentPage > 1) setCurrentPage(currentPage - 1)
+                        e.preventDefault();
+                        if (currentPage > 1) setCurrentPage(currentPage - 1);
                       }}
-                      className={currentPage <= 1 ? "pointer-events-none opacity-50" : ""}
+                      className={
+                        currentPage <= 1 ? "pointer-events-none opacity-50" : ""
+                      }
                     />
                   </PaginationItem>
 
@@ -189,8 +198,8 @@ export default function EventsPage() {
                         href="#"
                         isActive={currentPage === i + 1}
                         onClick={(e) => {
-                          e.preventDefault()
-                          setCurrentPage(i + 1)
+                          e.preventDefault();
+                          setCurrentPage(i + 1);
                         }}
                       >
                         {i + 1}
@@ -202,10 +211,15 @@ export default function EventsPage() {
                     <PaginationNext
                       href="#"
                       onClick={(e) => {
-                        e.preventDefault()
-                        if (currentPage < totalPages) setCurrentPage(currentPage + 1)
+                        e.preventDefault();
+                        if (currentPage < totalPages)
+                          setCurrentPage(currentPage + 1);
                       }}
-                      className={currentPage >= totalPages ? "pointer-events-none opacity-50" : ""}
+                      className={
+                        currentPage >= totalPages
+                          ? "pointer-events-none opacity-50"
+                          : ""
+                      }
                     />
                   </PaginationItem>
                 </PaginationContent>
@@ -214,7 +228,6 @@ export default function EventsPage() {
           </div>
         </div>
       </div>
-    </SiteLayout>
-  )
+    </>
+  );
 }
-
