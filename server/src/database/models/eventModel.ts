@@ -33,7 +33,7 @@ class Event extends Model {
         type: DataType.INTEGER,
         allowNull: false,
     })
-    declare price: string;
+    declare price: number;
 
     @Column({
         type: DataType.DATE,

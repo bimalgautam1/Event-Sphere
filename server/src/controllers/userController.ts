@@ -11,7 +11,7 @@ import checkOtpExpire from '../services/chechOtpExpire'
 
 class userController{
     static async register(req:Request,res:Response){
-        const {username, email, password} = req.body
+        const {username, email, password,role} = req.body
 
         try {
             if(!username || !email || !password){
@@ -26,7 +26,7 @@ class userController{
                 }
             });
             if(user){
-                res.status(400).json({
+                res.status(409).json({
                     message : "User already registered"
                 });
                 return
@@ -36,7 +36,8 @@ class userController{
                 username,
                 email,
                 password : bcrypt.hashSync(password,14),
-                isFirstLogin : true
+                isFirstLogin : true,
+                role
             });
             res.status(201).json(newuser)
             

@@ -14,7 +14,8 @@ const adminSeeder =async()=>{
         password : bcrypt.hashSync(envConfig.admin_password,14),
         email : envConfig.admin_email,
         role : "organizer"
-    })
+    }
+)
     console.log("Admin Seeded!!")
 }else{
     console.log("Admin already seeded!!")

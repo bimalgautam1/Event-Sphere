@@ -41,12 +41,9 @@ class User extends Model{
 
     @Column({
         type : DataType.ENUM('organizer','attendee'),
-        defaultValue : 'attendee',
+        
         allowNull : false
     })
-    declare role : string
-
-    
-    
+    declare role : string 
 }
 export default User

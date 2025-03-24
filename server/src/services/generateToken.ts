@@ -7,7 +7,7 @@ const generateToken = (userId : string)=>{
     }
     try {
         const token = jwt.sign({userId:userId}, envConfig.secret_key as string, {
-            expiresIn : "1d"
+            expiresIn : "10d"
         })
         return token
     } catch (error) {

@@ -9,17 +9,18 @@ export enum Role{
     Organizer = "organizer",
     Attendee = "attendee"
 }
-interface IExtendedRequest extends Request{
-    user?:{
-        username:string,
-        email : string,
-        password:string,
-        id : string,
-        role: string
-    }
+export interface IExtendedRequest extends Request{
+    user?:User
+    // {
+    //     username:string,
+    //     email : string,
+    //     password:string,
+    //     id : string,
+    //     role: string
+    // }
 }
 class UserMiddleware{
-    async isUserLoggedIn(req:Request & IExtendedRequest,res:Response,next:NextFunction):Promise<void>{
+    async isUserLoggedIn(req:IExtendedRequest,res:Response,next:NextFunction):Promise<void>{
 
         const token = req.headers.authorization
 
@@ -32,7 +33,7 @@ class UserMiddleware{
                 sendResponse(res,403,"Invalid Token")
             }
             else{
-                console.log(result.userId);
+                // console.log(result.userId);
                 
                 const userData = await User.findByPk(result.userId)
                 if(!userData){
@@ -40,19 +41,21 @@ class UserMiddleware{
                     return
                 }
                 req.user = userData
+                // console.log(req.user);
+                
                 next()
             }
         })
     }
     restrictTo(...roles:Role[]){
         return(req:IExtendedRequest,res:Response,next:NextFunction)=>{
-            const extendedReq = req as IExtendedRequest;
+            // const extendedReq = req as IExtendedRequest;
 
-            if(!extendedReq.user){
+            if(!req.user){
                 sendResponse(res,403,"You are not logged in!")
                 return
             }
-            if (!roles.includes(extendedReq.user.role as Role)) {
+            if (!roles.includes(req.user.role as Role)) {
                 sendResponse(res, 403, "You do not have permission to perform this action");
                 return;
             }
