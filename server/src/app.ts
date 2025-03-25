@@ -20,8 +20,8 @@ app.use(express.json());
     }
 })();
 
-app.use('/api/auth', userRoute)
-app.use('/api/create-event', eventRoute)
+app.use('/api/auth', userRoute) 
+app.use('/api/create-event', eventRoute)  
 app.use('/api/register-event', userEventRoute) 
 // app.use("*", (req, res) => {
 //     res.status(404).json({ message: "Route not found" });
