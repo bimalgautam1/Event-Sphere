@@ -3,10 +3,16 @@ import sequelize from './database/connection'; // Adjust the path as needed
 import userRoute from './routes/userRoute'; // Adjust the path as needed
 import eventRoute from './routes/eventRoute';
 import userEventRoute from './routes/userEventRoute'
+import cors from 'cors'
 
 const app = express();
-app.use(express.json());
 
+app.use(cors({
+    origin: ["https://event-sphere-43qh.onrender.com"],
+    methods : ["POST","GET"],
+    credentials: true
+}))
+app.use(express.json());
 
 (async () => {
     try {
