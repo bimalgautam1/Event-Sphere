@@ -51,6 +51,7 @@ class userController{
     }
     static async login(req:Request,res:Response){
         const {email,password} = req.body;
+        
         if(!email || !password){
             res.status(400).json({
                 message : "Please provide a valid email address and password. ",
