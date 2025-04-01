@@ -1,6 +1,7 @@
-import { Table, Model, PrimaryKey, Column, DataType,Unique, NotNull, Validate, IsEmail, AllowNull } from "sequelize-typescript"
+import { Table, Model, PrimaryKey, Column, DataType,Default,Unique, NotNull, Validate, IsEmail, AllowNull } from "sequelize-typescript"
 import User from "./userModel"
 import Event from "./eventModel"
+import { paymentMethod, paymentStatus } from "../../globals/types"
 
 @Table({
     tableName : "usereventregister",
@@ -43,7 +44,6 @@ class UserEventRegister extends Model{
           },     
     })
     declare eventId : string
-
     
     
 }

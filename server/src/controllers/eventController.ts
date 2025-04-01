@@ -16,7 +16,7 @@ import { Op } from "sequelize"
 class EventController{
     async createNewEvent(req:IExtendedRequest, res:Response):Promise<void>{
         const userId = req.user?.id
-        const{title,description,price,date} = req.body
+        const{title,description,price,date,categoryId} = req.body
 
 
         const filename = req.file?.filename
@@ -25,23 +25,25 @@ class EventController{
             return
         }
 
-        if(!title||!description||!date){
-            sendResponse(res,400,"Please provide title,description,price,date,organizer_id")
+        if(!title||!description||!date || !categoryId){
+            sendResponse(res,400,"Please provide title,description,price,date,organizer_id,categoryId")
         }
 
-        const checkOrganizer = await User.findOne({
-            where: {
-                id:userId,
-            }
-        })
+        // const checkOrganizer = await User.findOne({
+        //     where: {
+        //         id:userId,
+        //     }
+        // })
 
         await Event.create({
             title,
             description,
-            price : price || "free",
+            price : price,
             date,
             image_url : filename,
-            organizerId :userId
+            organizerId :userId,
+            categoryId:categoryId
+
         })
         sendResponse(res,200,"Data Successfully inserted")
 
