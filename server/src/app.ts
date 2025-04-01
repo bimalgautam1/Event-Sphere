@@ -9,10 +9,10 @@ import categoryRoute from './routes/categoryRoute'
 const app = express();
 
 app.use(cors({
-    origin: ["https://event-sphere-43qh.onrender.com"],
-    methods : ["POST","GET"],
+    origin: ["http://localhost:3000"], // Corrected format
+    methods: ["POST", "GET"],
     credentials: true
-}))
+}));
 app.use(express.json());
 
 (async () => {
@@ -30,7 +30,7 @@ app.use(express.json());
 app.use('/api/auth', userRoute) 
 app.use('/api/create-event', eventRoute)  
 app.use('/api/register-event', userEventRoute) 
-app.use('/api/categories',categoryRoute)
+app.use('/api/categories',categoryRoute) 
 // app.use("*", (req, res) => {
 //     res.status(404).json({ message: "Route not found" });
 //   });
