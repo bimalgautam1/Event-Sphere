@@ -3,7 +3,6 @@
 import { ChevronRight, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
 import { CategoryFilter } from "@/components/events/category-filter";
 import { EventGrid } from "@/components/events/event-grid";
 import { Button } from "@/components/ui/button";
